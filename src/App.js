@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, Fragment } from 'react';
+import { Container } from 'reactstrap';
+import {withRouter} from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Toolbar from './components/UI/Toolbar/Toolbar';
+import {connect} from "react-redux";
+import {getUser} from "./store/actions/usersActions";
+import Routes from "./Routes";
+
+import './App';
+
+class App extends Component {
+    render() {
+        return (
+            <Fragment>
+                <header>
+                    <Toolbar user={this.props.user}/>
+                </header>
+                <Container>
+                    <Routes user={this.props.user}/>
+                </Container>
+            </Fragment>
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = state => ({
+    user: state.users.user ? state.users.user : getUser()
+})
+
+export default withRouter(connect(mapStateToProps)(App));
